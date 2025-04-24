@@ -1,25 +1,114 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>first page</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <style>
-        body, html {
-            height: 100%;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome | Game Portal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #141e30);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      overflow: hidden;
+      color: white;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      flex-direction: column;
+      padding: 2rem;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      border-radius: 24px;
+      padding: 4rem 3rem;
+      box-shadow: 0 0 20px rgba(0, 255, 198, 0.05);
+      animation: fadeInUp 1s ease-out forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .glass-panel h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #00ffc6;
+      text-shadow: 0 0 10px #00ffc688;
+    }
+
+    .glass-panel p {
+      font-size: 1.2rem;
+      color: #e0e0e0;
+      margin-top: 1rem;
+    }
+
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+      animation: moveStars 200s linear infinite;
+      z-index: 0;
+      opacity: 0.08;
+    }
+
+    @keyframes moveStars {
+      from { background-position: 0 0; }
+      to { background-position: 10000px 5000px; }
+    }
+
+    footer {
+      position: absolute;
+      bottom: 1rem;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #ccc;
+      z-index: 2;
+    }
+  </style>
 </head>
-<body class="d-flex justify-content-center align-items-center">
-    <div class="text-center">
-        <h1>Download</h1>
-        <p>Beta version</p>
-        <p><a href="https://www.google.com" download class="btn btn-primary">Download Game</a></p>
+<body>
+
+  <div class="stars"></div>
+
+  <div class="container-center">
+    <div class="glass-panel">
+      <h1>Home Page</h1>
+      <p>The next-gen platform for immersive gaming experiences. Get ready to explore.</p>
     </div>
+  </div>
+
+  <footer>&copy; 2025 Galaxy Studios. All rights reserved.</footer>
 
 </body>
-
 </html>
+
 
