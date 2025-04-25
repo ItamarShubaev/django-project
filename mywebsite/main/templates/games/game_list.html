@@ -2,133 +2,317 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Game Downloads</title>
+  <title>Game Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      background: radial-gradient(circle at top, #111927, #0f2027, #203a43);
-      font-family: 'Poppins', sans-serif;
-      color: #ffffff;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0f1b, #1a1a2e);
+      color: #fff;
       min-height: 100vh;
-      padding: 3rem 1rem;
+      padding: 4rem 2rem 2rem;
+      overflow-x: hidden;
+    }
+
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #00ffe7;
+      font-size: 2rem;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 1rem;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: #00ffe7;
+      text-decoration: none;
+      font-weight: bold;
     }
 
     h1 {
       text-align: center;
-      font-weight: 800;
       font-size: 3rem;
+      color: #00ffe7;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 10px #00ffe7aa;
       letter-spacing: 2px;
-      margin-bottom: 3rem;
-      color: #00ffd5;
-      text-shadow: 0 0 10px #00ffd580;
     }
 
-    .game-card {
+    #typewriter {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
+      color: #aaa;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 1.5rem;
-      overflow: hidden;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 0 30px rgba(0, 255, 213, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 20px;
+      padding: 1rem;
+      box-shadow: 0 0 20px rgba(0, 255, 213, 0.1);
+      backdrop-filter: blur(12px);
+      perspective: 1000px;
+      transition: all 0.3s ease;
     }
 
-    .game-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 0 30px rgba(0, 255, 213, 0.25);
+    .card:hover {
+      transform: rotateY(5deg) rotateX(5deg) scale(1.03);
+      box-shadow: 0 0 30px rgba(0, 255, 213, 0.4);
     }
 
-    .game-img {
-      height: 200px;
-      background-color: #1b2838;
+    .cover {
+      width: 100%;
+      height: 180px;
+      border-radius: 15px;
       background-size: cover;
       background-position: center;
+      margin-bottom: 1rem;
     }
 
-    .card-body {
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .card-title {
-      font-size: 1.4rem;
+    .title {
+      font-size: 1.3rem;
       font-weight: 700;
-      margin-bottom: 0.3rem;
-      color: #ffffff;
+      color: #00ffe7;
+      text-shadow: 0 0 5px #00ffe7aa;
     }
 
-    .card-subtitle {
+    .subtitle {
+      color: #aaa;
+      margin-bottom: 0.5rem;
       font-size: 0.9rem;
-      color: #ced4da;
-      margin-bottom: 1.2rem;
     }
 
-    .btn-download {
-      background: linear-gradient(to right, #00ffd5, #0072ff);
-      color: #000;
-      font-weight: 700;
+    .tag {
+      background-color: #00ffe710;
+      color: #00ffe7;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.75rem;
+      margin-right: 0.3rem;
+      border-radius: 5px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, #00ffe7, #0088ff);
+      color: black;
+      font-weight: bold;
       border: none;
-      padding: 0.6rem 1.2rem;
+      padding: 0.6rem 1rem;
       border-radius: 10px;
-      transition: transform 0.2s ease;
+      cursor: pointer;
+      transition: all 0.3s ease;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      position: relative;
+      animation: neon-pulse 2s infinite;
     }
 
-    .btn-download:hover {
-      transform: scale(1.05);
+    @keyframes neon-pulse {
+      0%, 100% { box-shadow: 0 0 10px #00ffe7; }
+      50% { box-shadow: 0 0 20px #00ffe7, 0 0 40px #0088ff; }
     }
 
-    .alert {
-      background-color: rgba(255, 255, 255, 0.05);
-      border: 1px solid #ffbf00;
-      border-radius: 12px;
-      color: #ffbf00;
-      text-align: center;
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #1f1f2e;
       padding: 2rem;
-      font-size: 1.2rem;
+      border-radius: 15px;
+      max-width: 600px;
+      color: white;
+      position: relative;
+      animation: popin 0.4s ease;
+    }
+
+    @keyframes popin {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      color: #aaa;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    #particles-js {
+      position: fixed;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
     }
 
     @media (max-width: 768px) {
-      h1 {
-        font-size: 2.2rem;
-      }
-
-      .game-img {
-        height: 150px;
-      }
+      h1 { font-size: 2rem; }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1>Game Downloads</h1>
-    <div class="row g-4">
-      {% for game in games %}
-        <div class="col-md-6 col-lg-4">
-          <div class="game-card h-100">
-            <div class="game-img" style="background-image: url('{{ game.cover_url|default:"https://via.placeholder.com/400x200?text=Game+Cover" }}');"></div>
-            <div class="card-body">
-              <div>
-                <h5 class="card-title">{{ game.title }}</h5>
-                <h6 class="card-subtitle">Version: {{ game.version }}</h6>
-              </div>
-              <a href="{{ game.exe_file.url }}" class="btn btn-download mt-3" download>⬇ Download</a>
-            </div>
-          </div>
-        </div>
-      {% empty %}
-        <div class="col-12">
-          <div class="alert">No games available.</div>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
+<div id="loading-screen">Loading...</div>
 
+<nav>
+  <a href="#">Home</a>
+  <a href="#">Games</a>
+  <a href="#">About</a>
+</nav>
+
+<audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-click-1114.mp3"></audio>
+<audio id="bg-music" loop autoplay src="https://cdn.pixabay.com/download/audio/2023/03/28/audio_47a5aeeb53.mp3?filename=cyberpunk-moonlight-sonata-143993.mp3"></audio>
+<button onclick="toggleMusic()" class="btn" style="position:fixed; bottom:20px; right:20px; z-index:999;">🎧 Toggle Music</button>
+
+<div id="particles-js"></div>
+
+<h1>🚀 Game Hub</h1>
+<h2 id="typewriter"></h2>
+
+<div class="grid">
+  {% for game in games %}
+    <div class="card" data-aos="zoom-in">
+      <div class="cover" style="background-image: url('{{ game.cover_url|default:"https://via.placeholder.com/300x180?text=Cover" }}');"></div>
+      <div class="title">{{ game.title }}</div>
+      <div class="subtitle">Version: {{ game.version }}</div>
+      <div class="subtitle">⭐ {{ game.rating|default:"0" }}/5</div>
+      {% for tag in game.tags.all %}
+        <span class="tag">{{ tag.name }}</span>
+      {% endfor %}
+      <div class="buttons">
+        <a class="btn" href="{{ game.exe_file.url }}" download>Download</a>
+        {% if game.play_url %}
+          <a class="btn" href="{{ game.play_url }}">Play</a>
+        {% endif %}
+        <button class="btn" onclick="openModal({{ game.id }})">Details</button>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-{{ game.id }}">
+      <div class="modal-content">
+        <button class="close-btn" onclick="closeModal({{ game.id }})">&times;</button>
+        <h2>{{ game.title }}</h2>
+        <p>{{ game.description }}</p>
+        {% if game.trailer_url %}
+          <video controls width="100%" style="margin-top: 1rem;">
+            <source src="{{ game.trailer_url }}" type="video/mp4" />
+          </video>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+<script>
+  AOS.init({ duration: 800, once: true });
+
+  window.addEventListener("load", () => {
+    document.getElementById("loading-screen").style.display = "none";
+  });
+
+  const clickSound = document.getElementById("clickSound");
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    });
+  });
+
+  function toggleMusic() {
+    const music = document.getElementById("bg-music");
+    music.paused ? music.play() : music.pause();
+  }
+
+  function openModal(id) {
+    document.getElementById('modal-' + id).style.display = 'flex';
+  }
+
+  function closeModal(id) {
+    document.getElementById('modal-' + id).style.display = 'none';
+  }
+
+  // Typewriter
+  const text = "Your ultimate source for galactic gaming.";
+  let i = 0;
+  function typeWriter() {
+    if (i < text.length) {
+      document.getElementById("typewriter").innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typeWriter, 50);
+    }
+  }
+  window.onload = function() {
+    typeWriter();
+    tsParticles.load("particles-js", {
+      fullScreen: { enable: false },
+      background: { color: "#0f0f1b" },
+      particles: {
+        color: { value: "#00ffe7" },
+        links: { enable: true, color: "#00ffe7", distance: 120 },
+        move: { enable: true, speed: 1 },
+        size: { value: 2 },
+        number: { value: 60 }
+      }
+    });
+  }
+</script>
 </body>
 </html>
